@@ -2,20 +2,31 @@ package uk.co.sparktech.filedropalert.action;
 
 import java.util.List;
 
-public abstract class AbstractActionController implements Action {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-	@Override
-	public final void process(ActionPayload payload) {
-		List<String> actions = getActions();
+abstract class AbstractActionController {
+	
+	private final static Logger LOG = LogManager.getLogger(AbstractActionController.class.getName());
+	
+	public final synchronized void process(final ActionPayload payload, final List<String> actions) {
 		
-		processAction(payload);
+		// Delegating the control to a thread instance
+		Runnable t = new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				for(String action : actions) {
+					LOG.info("Triggering action. Action " + action + ", in Thread " + Thread.currentThread().getName());
+					action(payload, action);
+				}
+				
+			}
+		};
+		
+		new Thread(t).start();
 	}
 	
-	private List<String> getActions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected abstract void processAction(ActionPayload payload);
-	
+	public abstract void action(ActionPayload payload, String action);
 }

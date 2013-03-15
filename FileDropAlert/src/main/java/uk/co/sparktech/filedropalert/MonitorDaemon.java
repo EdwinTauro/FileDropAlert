@@ -6,9 +6,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import uk.co.sparktech.filedropalert.action.ActionFactory;
+import uk.co.sparktech.filedropalert.action.ActionController;
 import uk.co.sparktech.filedropalert.action.ActionPayload;
-import uk.co.sparktech.filedropalert.action.ActionProcessor;
 import uk.co.sparktech.filedropalert.util.property.AppPropertyReader;
 import uk.co.sparktech.filedropalert.util.property.AppPropertyReader.FILEDROPALERT;
 
@@ -32,6 +31,8 @@ public class MonitorDaemon extends Thread {
 	@Override
 	public void run() {
 		super.run();
+		
+		ActionController controller = new ActionController();
 		
 		while (true) {
 			try {
@@ -57,17 +58,11 @@ public class MonitorDaemon extends Thread {
 						boolean newFile = m_fileStat.isNewFile(f);
 						
 						if (newFile) {
+							ActionPayload payload = new ActionPayload(f);
+							controller.process(payload, m_actions);
+							
 							LOG.info("Found new file adding to list. File " + f.getPath());
 							m_fileStat.add(f);
-							
-							ActionFactory actionFactory = ActionFactory.getInstance();
-							ActionPayload payload = new ActionPayload(f);
-							
-							for(String action : m_actions) {
-								LOG.info("Triggering action. Action " + action);
-								ActionProcessor processor = actionFactory.getProcessor(action);
-								processor.processActionPayload(payload);
-							}
 						}
 					}
 				}				

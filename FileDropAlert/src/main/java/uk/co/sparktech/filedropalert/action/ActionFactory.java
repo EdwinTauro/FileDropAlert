@@ -2,7 +2,7 @@ package uk.co.sparktech.filedropalert.action;
 
 import uk.co.sparktech.filedropalert.action.email.EmailActionProcessor;
 
-public class ActionFactory {
+class ActionFactory {
 
 	private static final ActionFactory m_factory = new ActionFactory();
 	
@@ -17,7 +17,7 @@ public class ActionFactory {
 	public ActionProcessor getProcessor(String action) {
 		ActionProcessor processor = null;
 		
-		if (Action.Actions.EMAIL.toString().toLowerCase().equals(action.toLowerCase())) {
+		if (Action.EMAIL.toString().toLowerCase().equals(action.toLowerCase())) {
 			processor = new EmailActionProcessor();
 		} else {
 			throw new RuntimeException("Action not implemented. Action " + action);
