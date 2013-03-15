@@ -1,11 +1,13 @@
 package uk.co.sparktech.filedropalert.action;
 
+import uk.co.sparktech.filedropalert.action.email.EmailActionProcessor;
+
 public class ActionFactory {
 
 	private static final ActionFactory m_factory = new ActionFactory();
 	
 	private ActionFactory() {
-		//Default consutrutor
+		//Default constructor
 	}
 	
 	public static ActionFactory getInstance() {

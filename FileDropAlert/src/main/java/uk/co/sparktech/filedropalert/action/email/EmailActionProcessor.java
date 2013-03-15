@@ -1,6 +1,8 @@
-package uk.co.sparktech.filedropalert.action;
+package uk.co.sparktech.filedropalert.action.email;
 
-import uk.co.sparktech.filedropalert.action.email.SendMail;
+import uk.co.sparktech.filedropalert.action.AbstractActionController;
+import uk.co.sparktech.filedropalert.action.ActionPayload;
+import uk.co.sparktech.filedropalert.action.ActionProcessor;
 
 public class EmailActionProcessor extends AbstractActionController
 		implements ActionProcessor  {

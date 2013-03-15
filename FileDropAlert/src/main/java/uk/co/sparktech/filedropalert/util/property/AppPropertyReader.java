@@ -6,8 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public final class AppPropertyReader {
-	
+	private final static Logger LOG = LogManager.getLogger(AppPropertyReader.class.getName());
+
 	private static final String PROPERTY_FILENAME = "filedropalert.properties";
 
 	private static String FILE_DROP_ALERT_PROPERTY_KEY = "filedropalert.properties";
@@ -25,12 +29,12 @@ public final class AppPropertyReader {
 		File f = new File(PROPERTY_FILENAME);
 		
 		if (!f.exists()) {
-			System.out.println("File " + PROPERTY_FILENAME + ", not found on app path. \n Looking for property set against -D" + FILE_DROP_ALERT_PROPERTY_KEY + " at command line.");
+			LOG.info("File " + PROPERTY_FILENAME + ", not found on app path. \n Looking for property set against -D" + FILE_DROP_ALERT_PROPERTY_KEY + " at command line.");
 			
 			f = new File(System.getProperty(FILE_DROP_ALERT_PROPERTY_KEY));
 			
 			if (!f.exists()) {
-				System.out.println("Stopping the application");
+				LOG.error("Stopping the application");
 			}
 		}
 		
@@ -65,7 +69,6 @@ public final class AppPropertyReader {
 			key = "filedropalert.interval";
 		}
 		String value = getValue(key);
-		
 		
 		if (value == null) {
 			throw new RuntimeException("Invalid value defined for Key. " + key);
