@@ -19,7 +19,7 @@ public class MainFileDropAlert {
 		LOG.trace("Entering application.");
 
 		String path = args[0];
-		String[] actions = Arrays.copyOfRange(args, 1, args.length - 1);
+		String[] actions = Arrays.copyOfRange(args, 1, args.length);
 		new MainFileDropAlert().start(path, actions);
 		
 		LOG.trace("Exiting application.");
