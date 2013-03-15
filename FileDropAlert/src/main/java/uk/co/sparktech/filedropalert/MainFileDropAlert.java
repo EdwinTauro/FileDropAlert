@@ -16,13 +16,13 @@ public class MainFileDropAlert {
 		if (args.length == 0 || args.length < 2) {
 			throw new RuntimeException("Command line argument required. Provide path and action to be taken.");
 		}
-		LOG.info("Entering application.");
+		LOG.trace("Entering application.");
 
 		String path = args[0];
 		String[] actions = Arrays.copyOfRange(args, 1, args.length - 1);
 		new MainFileDropAlert().start(path, actions);
 		
-		LOG.info("Exiting application.");
+		LOG.trace("Exiting application.");
 	}
 
 	public void start(String pathname, String... action) {
