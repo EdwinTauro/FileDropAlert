@@ -4,7 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class FileUtil {
+	private final static Logger LOG = LogManager.getLogger(FileUtil.class.getName());
 	
 	public static final synchronized List<File> loadFilesInDirectory(File f) {
 		if (!f.canRead()) {
@@ -16,7 +20,7 @@ public class FileUtil {
 		
 		for (String filename : filesInDirectory) {
 			File newFile = new File(path + File.separator + filename);
-			System.out.println(newFile.getPath());
+			LOG.debug(newFile.getPath());
 
 			files.add(newFile);
 		}

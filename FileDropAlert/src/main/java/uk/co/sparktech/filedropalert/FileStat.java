@@ -4,7 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class FileStat {
+	private final static Logger LOG = LogManager.getLogger(FileStat.class.getName());
+
 	File m_rootFile;
 	List<File> m_fileStatuses = new ArrayList<File>();
 
@@ -29,7 +34,7 @@ public class FileStat {
 		final boolean result = m_fileStatuses.remove(f);
 		
 		if (!result) {
-			System.out.println("File does not exsit to be removed. File " + f.getParent());
+			LOG.info("File does not exsit to be removed. File " + f.getParent());
 		}
 	}
 

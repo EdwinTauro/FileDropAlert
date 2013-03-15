@@ -3,6 +3,9 @@ package uk.co.sparktech.filedropalert;
 import java.io.File;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import uk.co.sparktech.filedropalert.action.ActionFactory;
 import uk.co.sparktech.filedropalert.action.ActionPayload;
 import uk.co.sparktech.filedropalert.action.ActionProcessor;
@@ -11,8 +14,12 @@ import uk.co.sparktech.filedropalert.util.property.AppPropertyReader.FILEDROPALE
 
 public class MonitorDaemon extends Thread {
 
+	private final static Logger LOG = LogManager.getLogger(MonitorDaemon.class.getName());
+	
 	private final AppPropertyReader PROPERTY = AppPropertyReader.getInstance();
 
+	private final int SLEEP_TIME = Integer.decode(PROPERTY.getValue(FILEDROPALERT.CHECKING_INTERVAL));
+	
 	private final FileStat m_fileStat;
 	
 	private final List<String> m_actions;
@@ -28,15 +35,15 @@ public class MonitorDaemon extends Thread {
 		
 		while (true) {
 			try {
-				System.out.println("Sleeping ... ");
-				Thread.sleep(Integer.decode(PROPERTY.getValue(FILEDROPALERT.CHECKING_INTERVAL)));
-				System.out.println("Woken up and now monitoring... ");
+				LOG.debug("Sleeping for " + SLEEP_TIME + " ms !!!");
+				Thread.sleep(SLEEP_TIME);
+				LOG.debug("Woken up and now monitoring!");
 
 				// Ensure root path still exists
 				File file = m_fileStat.m_rootFile;
 				
 				if (!FileUtil.fileExists(file)) {
-					System.out.println("File move or deleted nothing to monitor, file " + file.getPath());
+					LOG.warn("File moved or deleted nothing to monitor, file " + file.getPath());
 				} 
 				else {
 					// Check on original set of files if any missing remove from list
@@ -50,14 +57,14 @@ public class MonitorDaemon extends Thread {
 						boolean newFile = m_fileStat.isNewFile(f);
 						
 						if (newFile) {
-							System.out.println("Found new file adding to list. File " + f.getPath());
+							LOG.info("Found new file adding to list. File " + f.getPath());
 							m_fileStat.add(f);
 							
 							ActionFactory actionFactory = ActionFactory.getInstance();
 							ActionPayload payload = new ActionPayload(f);
 							
 							for(String action : m_actions) {
-								System.out.println("Triggering action. Action " + action);
+								LOG.info("Triggering action. Action " + action);
 								ActionProcessor processor = actionFactory.getProcessor(action);
 								processor.processActionPayload(payload);
 							}
@@ -65,11 +72,10 @@ public class MonitorDaemon extends Thread {
 					}
 				}				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				LOG.error(e.getMessage());
 				e.printStackTrace();
 			}
 			
 		}
 	}
-	
 }

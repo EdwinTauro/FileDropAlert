@@ -18,11 +18,16 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import uk.co.sparktech.filedropalert.action.ActionPayload;
 import uk.co.sparktech.filedropalert.util.property.EmailPropertyReader;
 import uk.co.sparktech.filedropalert.util.property.EmailPropertyReader.FILEDROPALERT_EMAIL_ACTION;
  
-public class SendMail {
+class SendMail {
+	private final static Logger LOG = LogManager.getLogger(SendMail.class.getName());
+			
 	private final static EmailPropertyReader PROPERTY = EmailPropertyReader.getInstance();
 
 	public static void mail(ActionPayload payload) {
@@ -43,7 +48,6 @@ public class SendMail {
 		  });
  
 		try {
- 
 			Message message = new MimeMessage(session);
 			String recepients = PROPERTY.getValue(FILEDROPALERT_EMAIL_ACTION.MAIL_MESSAGE_RECEPIENTS);
 			InternetAddress[] recepientsList = InternetAddress.parse(recepients);
@@ -53,7 +57,6 @@ public class SendMail {
 			
 			if (requireTimestamp) {
 				subject = subject.concat(DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()));
-				System.out.println(subject);
 			}
 			message.setSubject(subject);
 			
@@ -75,8 +78,7 @@ public class SendMail {
          
 			Transport.send(message);
  
-            System.out.println("email success....................................");  
-			
+            LOG.debug("Sending email " + subject + "email success....................................");  
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
