@@ -31,6 +31,7 @@ class SendMail {
 	private final static EmailPropertyReader PROPERTY = EmailPropertyReader.getInstance();
 
 	public static void mail(ActionPayload payload) {
+		LOG.trace("Sending email. File " + payload.getName());
 		final String username = PROPERTY.getValue(FILEDROPALERT_EMAIL_ACTION.MAIL_USERNAME);
 		final String password = PROPERTY.getValue(FILEDROPALERT_EMAIL_ACTION.MAIL_PASSWORD);
  
@@ -67,15 +68,17 @@ class SendMail {
             
             Multipart multipart = new MimeMultipart();  
             multipart.addBodyPart(messageBodyPart);  
-            // Part two is attachment  
+            // Part two is attachment
+            LOG.trace("Attaching file to message. ");
             messageBodyPart = new MimeBodyPart();  
-            DataSource source = new FileDataSource(payload.getFile());  
+            DataSource source = new FileDataSource(payload.getFile());
             messageBodyPart.setDataHandler(new DataHandler(source));  
             messageBodyPart.setFileName(payload.getName());  
             multipart.addBodyPart(messageBodyPart);  
             // Put parts in message  
             message.setContent(multipart);  
-         
+            LOG.trace("Finished attaching. Sending email ... ");
+            
 			Transport.send(message);
  
             LOG.debug("Sending email " + subject + "email success....................................");  

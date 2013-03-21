@@ -3,6 +3,11 @@ package uk.co.sparktech.filedropalert.action;
 import java.io.File;
 
 public class ActionPayload {
+	
+	private boolean m_payloadLocked;
+	
+	private String m_actionProcessorName;
+	
 	private File m_file;
 	
 	public ActionPayload(File f) {
@@ -22,6 +27,23 @@ public class ActionPayload {
 	public String getName() {
 		
 		return m_file.getName();
+	}
+
+	public synchronized void lockPayload(String actionProcessorName) {
+		m_actionProcessorName = actionProcessorName;
+		m_payloadLocked = true;
+	}
+	
+	public synchronized void unlockPayload() {
+		m_payloadLocked = false;
+	}
+
+	public boolean isLocked() {
+		return m_payloadLocked;
+	}
+	
+	public String lockedBy() {
+		return m_actionProcessorName;
 	}
 
 }
