@@ -3,11 +3,18 @@ package uk.co.sparktech.filedropalert.action;
 public class ActionController extends AbstractActionController {
 
 	@Override
-	public void action(ActionPayload payload, String action) {
-		ActionFactory actionFactory = ActionFactory.getInstance();
+	public void action(final ActionPayload payload, final String action) {
+		
+		Runnable runnable = new Runnable() {
 
-		ActionProcessor processor = actionFactory.getProcessor(action);
-		processor.processActionPayload(payload);
+			@Override
+			public void run() {
+				
+				ActionProcessor processor = m_actionFactory.getProcessor(action);
+				processor.processActionPayload(payload);				
+			}
+		};
+		new Thread(runnable).start();
 
 	}
 

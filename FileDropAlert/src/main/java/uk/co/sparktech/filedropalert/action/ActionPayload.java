@@ -38,7 +38,7 @@ public class ActionPayload {
 		m_payloadLocked = false;
 	}
 
-	public boolean isLocked() {
+	public synchronized boolean isLocked() {
 		return m_payloadLocked;
 	}
 	

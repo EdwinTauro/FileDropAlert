@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import uk.co.sparktech.filedropalert.action.ActionController;
 import uk.co.sparktech.filedropalert.action.ActionPayload;
+import uk.co.sparktech.filedropalert.event.EventHandler;
 import uk.co.sparktech.filedropalert.util.property.AppPropertyReader;
 import uk.co.sparktech.filedropalert.util.property.AppPropertyReader.FILEDROPALERT;
 
@@ -32,7 +32,7 @@ public class MonitorDaemon extends Thread {
 	public void run() {
 		super.run();
 		
-		ActionController controller = new ActionController();
+		EventHandler event = EventHandler.getInstance();
 		
 		while (true) {
 			try {
@@ -59,9 +59,9 @@ public class MonitorDaemon extends Thread {
 						
 						if (newFile) {
 							ActionPayload payload = new ActionPayload(f);
-							controller.process(payload, m_actions);
+							event.trigger(payload, m_actions);
 							
-							LOG.info("Found new file adding to list. File " + f.getPath());
+							LOG.debug("Found new file adding to list. File " + f.getPath());
 							m_fileStat.add(f);
 						}
 					}

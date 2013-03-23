@@ -11,20 +11,9 @@ public final class EmailActionProcessor implements ActionProcessor  {
 	}
 	
 	@Override
-	public final synchronized void processActionPayload(final ActionPayload payload) {
-
-		// Delegating the email sending business to another thread as this 
-		// could be a long process.
-		Runnable t = new Runnable() {
-			
-			@Override
-			public void run() {
-				payload.lockPayload(ACTION_PROCESS_NAME);
-				SendMail.mail(payload);
-				payload.unlockPayload();
-			}
-		};
-		
-		new Thread(t).start();  
+	public final void processActionPayload(final ActionPayload payload) {
+		payload.lockPayload(ACTION_PROCESS_NAME);
+		SendMail.mail(payload);
+		payload.unlockPayload();
 	}
 }

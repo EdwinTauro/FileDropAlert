@@ -9,6 +9,8 @@ abstract class AbstractActionController {
 	
 	private final static Logger LOG = LogManager.getLogger(AbstractActionController.class.getName());
 	
+	final ActionFactory m_actionFactory = ActionFactory.getInstance();
+	
 	public final synchronized void process(final ActionPayload payload, final List<String> actions) {
 		
 		// Delegating the control to a thread instance
