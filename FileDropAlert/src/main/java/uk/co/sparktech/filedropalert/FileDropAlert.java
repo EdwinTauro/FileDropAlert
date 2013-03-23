@@ -13,8 +13,8 @@ import uk.co.sparktech.filedropalert.action.ActionProcessor;
 import uk.co.sparktech.filedropalert.action.ActionProcessorMapping;
 import uk.co.sparktech.filedropalert.util.PackageReader;
 
-public class MainFileDropAlert {
-	private static final Logger LOG = LogManager.getLogger(MainFileDropAlert.class.getName());
+public class FileDropAlert {
+	private static final Logger LOG = LogManager.getLogger(FileDropAlert.class.getName());
 
 	static {
 		List<String> classList = PackageReader.read(ActionProcessor.class.getPackage().getName());
@@ -68,7 +68,7 @@ public class MainFileDropAlert {
 
 		String path = args[0];
 		String[] actions = Arrays.copyOfRange(args, 1, args.length);
-		new MainFileDropAlert().start(path, actions);
+		new FileDropAlert().start(path, actions);
 		
 		LOG.trace("Exiting application.");
 	}
