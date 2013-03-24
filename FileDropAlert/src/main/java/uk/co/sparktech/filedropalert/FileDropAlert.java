@@ -20,7 +20,7 @@ public class FileDropAlert {
 		List<String> classList = PackageReader.read(ActionProcessor.class.getPackage().getName());
 		findActionProcessorImplementationClassFromList(classList, "processor");
 	
-		LOG.info(ActionProcessorMapping.registeredActions());
+		LOG.info("Default registered actions " + ActionProcessorMapping.registeredActions());
 	}
 
 	private static List<Class<?>> findActionProcessorImplementationClassFromList(final List<String> files, String hint) {

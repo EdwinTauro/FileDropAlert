@@ -12,13 +12,13 @@ public class FileDropAlertMain {
 		if (args.length == 0 || args.length < 2) {
 			throw new RuntimeException("Command line argument required. Provide path to monitor and action to be taken.");
 		}
-		LOG.trace("Entering application.");
+		LOG.trace("Launching application.");
 
 		String path = args[0];
 		String[] actions = Arrays.copyOfRange(args, 1, args.length);
 		new FileDropAlert().start(path, actions);
 		
-		LOG.trace("Exiting application.");
+		LOG.trace("Done launching application.");
 	}
 
 }
