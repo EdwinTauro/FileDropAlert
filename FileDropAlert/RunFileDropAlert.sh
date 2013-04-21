@@ -1,0 +1,1 @@
+java -Dfiledropalert.properties=./filedropalert.properties -jar FileDropAlert-0.0.1-SNAPSHOT.jar /media/administrator/data1/tmp/motion EMAIL DELETE-FILE
